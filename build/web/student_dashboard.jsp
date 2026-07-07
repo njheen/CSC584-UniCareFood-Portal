@@ -71,36 +71,33 @@
     <hr>
     
     <h3>Available Food Stock</h3>
-    <table border="1" cellpadding="5" width="50%">
-        <tr style="background-color: #dff0d8;">
-            <th>Item</th>
-            <th>Category</th>
-            <th>Quantity Available</th>
+<table border="1" cellpadding="5" width="70%">
+    <tr style="background-color: #dff0d8;">
+        <th>Item</th>
+        <th>Category</th>
+        <th>Quantity Available</th>
+        <th>Expiry Date</th>
+    </tr>
+    <%
+        try {
+            ps = con.prepareStatement(
+                "SELECT item_name, category, SUM(quantity) as total_qty, MIN(expiry_date) as earliest_expiry " +
+                "FROM Inventory GROUP BY item_name, category"
+            );
+            rs = ps.executeQuery();
+            while(rs.next()) {
+                String expiry = rs.getDate("earliest_expiry") != null ? rs.getDate("earliest_expiry").toString() : "-";
+    %>
+        <tr>
+            <td><%= rs.getString("item_name") %></td>
+            <td><%= rs.getString("category") %></td>
+            <td><%= rs.getInt("total_qty") %></td>
+            <td><%= expiry %></td>
         </tr>
-        <%
-            try {
-                // Reusing the 'con' connection from above
-                ps = con.prepareStatement("SELECT item_name, category, SUM(quantity) as total_qty FROM Inventory GROUP BY item_name, category");
-                rs = ps.executeQuery();
-                
-                while(rs.next()) {
-        %>
-            <tr>
-                <td><%= rs.getString("item_name") %></td>
-                <td><%= rs.getString("category") %></td>
-                <td><%= rs.getInt("total_qty") %></td>
-            </tr>
-        <%      
-                }
-            } catch(Exception e) { 
-                e.printStackTrace(); 
-            } finally { 
-                // 3. Now we close ALL connections at the very end
-                if(rs != null) try { rs.close(); } catch(Exception e){}
-                if(ps != null) try { ps.close(); } catch(Exception e){}
-                if(con != null) try { con.close(); } catch(Exception e){}
+    <%      
             }
-        %>
-    </table>
+        } catch(Exception e) { e.printStackTrace(); } 
+    %>
+</table>
 </body>
 </html>

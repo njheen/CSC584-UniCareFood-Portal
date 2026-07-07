@@ -19,12 +19,12 @@
     ResultSet rs = null;
     String itemName = "", category = "";
     int quantity = 0;
-    String donorEmail = ""; // may be null
+    String donorEmail = ""; 
     String donorName = "";
+    String expiryDateStr = "";
 
     try {
         con = DBConnection.getConnection();
-        // Get item details including donor info
         ps = con.prepareStatement(
             "SELECT i.*, d.name as donor_name FROM Inventory i " +
             "LEFT JOIN Donors d ON i.donor_email = d.email WHERE i.id = ?"
@@ -37,6 +37,10 @@
             quantity = rs.getInt("quantity");
             donorEmail = rs.getString("donor_email") != null ? rs.getString("donor_email") : "";
             donorName = rs.getString("donor_name") != null ? rs.getString("donor_name") : "None";
+            
+            // --- Fetch expiry date ---
+            java.sql.Date exp = rs.getDate("expiry_date");
+            if (exp != null) expiryDateStr = exp.toString();
         } else {
             response.sendRedirect("inventory.jsp?error=Item not found");
             return;
@@ -59,7 +63,7 @@
         body { font-family: Arial, sans-serif; margin: 20px; }
         .container { max-width: 600px; margin: 0 auto; }
         label { display: inline-block; width: 120px; font-weight: bold; }
-        input[type="text"], input[type="number"] { width: 250px; padding: 5px; }
+        input[type="text"], input[type="number"], input[type="date"] { width: 250px; padding: 5px; }
         select { width: 260px; padding: 5px; }
         .search-box { margin: 10px 0; }
         .search-box input { width: 250px; padding: 5px; }
@@ -72,13 +76,11 @@
         .success { color: green; }
     </style>
     <script>
-        // Filter donor dropdown options based on search input
         function filterDonors() {
             var input = document.getElementById('donorSearch');
             var filter = input.value.toLowerCase();
             var select = document.getElementById('donorSelect');
             var options = select.options;
-
             for (var i = 0; i < options.length; i++) {
                 var txt = options[i].text.toLowerCase();
                 if (txt.indexOf(filter) > -1) {
@@ -89,14 +91,12 @@
             }
         }
 
-        // When an option is selected, clear the search box and show the selection
         function selectDonor() {
             var select = document.getElementById('donorSelect');
             var input = document.getElementById('donorSearch');
             if (select.value) {
                 var selectedText = select.options[select.selectedIndex].text;
                 input.value = selectedText;
-                // Hide all options except the selected one
                 for (var i = 0; i < select.options.length; i++) {
                     if (i === select.selectedIndex) {
                         select.options[i].style.display = '';
@@ -107,7 +107,6 @@
             }
         }
 
-        // Reset filter when user clicks on select
         function resetFilter() {
             var select = document.getElementById('donorSelect');
             for (var i = 0; i < select.options.length; i++) {
@@ -141,19 +140,22 @@
             <label>Quantity:</label>
             <input type="number" name="quantity" value="<%= quantity %>" required min="1">
         </div><br>
+        
+        <div>
+            <label>Expiry Date:</label>
+            <input type="date" name="expiryDate" value="<%= expiryDateStr %>">
+            <br><small>Leave empty if unknown.</small>
+        </div><br>
 
         <div>
             <label>Donor:</label>
             <div style="display:inline-block;">
-                <!-- Search input -->
                 <div class="search-box">
                     <input type="text" id="donorSearch" placeholder="Search donor by name or email..." onkeyup="filterDonors()" onclick="resetFilter()">
                 </div>
-                <!-- Dropdown with all donors -->
                 <select id="donorSelect" name="donorEmail" onchange="selectDonor()" size="8">
                     <option value="">-- None (Anonymous) --</option>
                     <%
-                        // Fetch all donors for dropdown
                         Connection con2 = null;
                         PreparedStatement ps2 = null;
                         ResultSet rs2 = null;

@@ -43,6 +43,7 @@ CREATE TABLE Inventory (
     item_name VARCHAR(100) NOT NULL,
     category VARCHAR(50) NOT NULL,
     quantity INT NOT NULL,
+    expiry_date DATE,
     donor_email VARCHAR(100),
     CONSTRAINT fk_donor FOREIGN KEY (donor_email) REFERENCES Donors(email) ON DELETE SET NULL
 );

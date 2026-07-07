@@ -15,6 +15,7 @@
         Item Name: <input type="text" name="itemName" required>
         Category: <input type="text" name="category" required>
         Quantity: <input type="number" name="quantity" required min="1">
+        Expiry Date: <input type="date" name="expiryDate"><br><br>
         <button type="submit">Add Donation</button>
     </form>
     
@@ -38,6 +39,7 @@
                     <td><input type="text" name="itemName" value="<%= rs.getString("item_name") %>"></td>
                     <td><input type="text" name="category" value="<%= rs.getString("category") %>"></td>
                     <td><input type="number" name="quantity" value="<%= rs.getInt("quantity") %>"></td>
+                    <td><input type="date" name="expiryDate" value="<%= rs.getDate("expiry_date") != null ? rs.getDate("expiry_date").toString() : "" %>"></td>
                     <td>
                         <button type="submit">Update</button>
                         <a href="InventoryServlet?action=delete&id=<%= rs.getInt("id") %>" onclick="return confirm('Delete this item?');">Delete</a>
