@@ -16,7 +16,8 @@
     <%-- Only show these links if the user is STAFF --%>
     <% if ("STAFF".equals(user.getRole())) { %>
         <a href="staff_requests.jsp">Manage Voucher Requests</a> | 
-        <a href="staff_register.jsp">Register New Staff</a> | 
+        <a href="manage_users.jsp">Manage Users</a> | 
+        <a href="staff_register.jsp">Register New Staff</a> |
     <% } %>
     
     <a href="AuthServlet?action=logout">Logout</a>
