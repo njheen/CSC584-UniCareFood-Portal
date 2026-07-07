@@ -24,10 +24,15 @@
     <h3>Current Inventory (Read, Update, Delete)</h3>
     <table border="1" cellpadding="5">
         <tr style="background-color: #d9edf7;">
-            <th>Item</th><th>Category</th><th>Qty</th><th>Donor Name</th><th>Donor Email</th><th>Donor Phone</th><th>Actions</th>
+            <th>Item</th>
+            <th>Category</th>
+            <th>Qty</th>
+            <th>Donor Name</th>
+            <th>Donor Email</th>
+            <th>Donor Phone</th>
+            <th>Actions</th>
         </tr>
         <%
-            // 1. Declare the variables with their types here
             Connection con = null;
             Statement stmt = null;
             ResultSet rs = null;
@@ -51,6 +56,7 @@
                 <td><%= donorEmail %></td>
                 <td><%= donorPhone %></td>
                 <td>
+                    <a href="edit_inventory.jsp?id=<%= rs.getInt("id") %>">Edit</a> |
                     <a href="InventoryServlet?action=delete&id=<%= rs.getInt("id") %>" onclick="return confirm('Delete?');">Delete</a>
                 </td>
             </tr>
@@ -59,7 +65,6 @@
             } catch (Exception e) { 
                 e.printStackTrace(); 
             } finally {
-                // 2. Always close resources to prevent database leaks
                 if (rs != null) try { rs.close(); } catch(SQLException e) {}
                 if (stmt != null) try { stmt.close(); } catch(SQLException e) {}
                 if (con != null) try { con.close(); } catch(SQLException e) {}

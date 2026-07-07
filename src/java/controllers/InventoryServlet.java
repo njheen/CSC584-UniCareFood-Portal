@@ -34,11 +34,30 @@ public class InventoryServlet extends HttpServlet {
                 ps.executeUpdate();
                 
             } else if ("update".equals(action)) {
-                ps = con.prepareStatement("UPDATE Inventory SET item_name=?, category=?, quantity=? WHERE id=?");
-                ps.setString(1, request.getParameter("itemName"));
-                ps.setString(2, request.getParameter("category"));
-                ps.setInt(3, Integer.parseInt(request.getParameter("quantity")));
-                ps.setInt(4, Integer.parseInt(request.getParameter("id")));
+                // Get all parameters
+                String itemName = request.getParameter("itemName");
+                String category = request.getParameter("category");
+                int quantity = Integer.parseInt(request.getParameter("quantity"));
+                int id = Integer.parseInt(request.getParameter("id"));
+                String donorEmail = request.getParameter("donorEmail");
+
+                // If donorEmail is empty string, set to null (anonymous)
+                if (donorEmail != null && donorEmail.trim().isEmpty()) {
+                    donorEmail = null;
+                }
+
+                ps = con.prepareStatement(
+                    "UPDATE Inventory SET item_name=?, category=?, quantity=?, donor_email=? WHERE id=?"
+                );
+                ps.setString(1, itemName);
+                ps.setString(2, category);
+                ps.setInt(3, quantity);
+                if (donorEmail != null) {
+                    ps.setString(4, donorEmail);
+                } else {
+                    ps.setNull(4, java.sql.Types.VARCHAR);
+                }
+                ps.setInt(5, id);
                 ps.executeUpdate();
             }
         } catch (SQLException e) { e.printStackTrace(); } 
