@@ -9,15 +9,15 @@
 <html>
 <head><title>Dashboard</title></head>
 <body>
-    <h2>Welcome, <%= user.getUsername() %> (<%= user.getRole() %>)</h2>
+    <h2>Welcome, <%= user.getName() %> (<%= user.getRole() %>)</h2>
     
     <a href="inventory.jsp">Manage Inventory (CRUD)</a> | 
     
     <%-- Only show these links if the user is STAFF --%>
-    <% if ("STAFF".equals(user.getRole())) { %>
+    <% if ("STAFF".equals(user.getRole()) || "ADMIN".equals(user.getRole())) { %>
         <a href="staff_requests.jsp">Manage Voucher Requests</a> | 
         <a href="manage_users.jsp">Manage Users</a> | 
-        <a href="staff_register.jsp">Register New Staff</a> |
+        <a href="staff_register.jsp">Register New Staff</a> | 
     <% } %>
     
     <a href="AuthServlet?action=logout">Logout</a>

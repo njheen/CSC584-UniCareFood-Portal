@@ -1,8 +1,12 @@
 <%@page import="java.sql.*, models.DBConnection, models.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+    // Allow BOTH Staff and Admins
     User user = (User) session.getAttribute("currentUser");
-    if (user == null || !"STAFF".equals(user.getRole())) { response.sendRedirect("index.jsp"); return; }
+    if (user == null || (!"STAFF".equals(user.getRole()) && !"ADMIN".equals(user.getRole()))) { 
+        response.sendRedirect("index.jsp"); 
+        return; 
+    }
 %>
 <!DOCTYPE html>
 <html>

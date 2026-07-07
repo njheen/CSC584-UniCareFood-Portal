@@ -6,10 +6,13 @@
     <h2>Login to Food Bank System</h2>
     <p style="color:red;">${param.error}</p>
     <p style="color:green;">${param.msg}</p>
+    
     <form action="AuthServlet" method="post">
         <input type="hidden" name="action" value="login">
-        Username: <input type="text" name="username" required><br><br>
-        Password: <input type="password" name="password" required><br><br>
+        Login ID (Student ID / Email / Staff ID): <br>
+        <input type="text" name="loginId" required size="35"><br><br>
+        Password: <br>
+        <input type="password" name="password" required size="35"><br><br>
         <button type="submit">Login</button>
     </form>
     <br>

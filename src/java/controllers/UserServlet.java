@@ -10,38 +10,46 @@ import models.DBConnection;
 @WebServlet(name = "UserServlet", urlPatterns = {"/UserServlet"})
 public class UserServlet extends HttpServlet {
 
-    // Handles Updating the User
+    // --- HANDLES UPDATING USERS ---
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         
         if ("update".equals(action)) {
-            Connection con = null;
-            PreparedStatement ps = null;
+            String role = request.getParameter("role");
+            String id = request.getParameter("id"); // The unchanging Primary Key
             
+            Connection con = null; PreparedStatement ps = null;
             try {
                 con = DBConnection.getConnection();
                 
-                String role = request.getParameter("role");
-                String studentId = request.getParameter("studentId");
-                
-                // If role is changed to DONOR or STAFF, clear the student ID
-                if (!"STUDENT".equals(role)) {
-                    studentId = "N/A";
+                if ("STAFF".equals(role) || "ADMIN".equals(role)) {
+                    ps = con.prepareStatement("UPDATE Staff SET role=?, password=? WHERE staff_id=?");
+                    ps.setString(1, request.getParameter("newRole"));
+                    ps.setString(2, request.getParameter("password"));
+                    ps.setString(3, id);
+                } 
+                else if ("DONOR".equals(role)) {
+                    ps = con.prepareStatement("UPDATE Donors SET name=?, phone_num=?, password=? WHERE email=?");
+                    ps.setString(1, request.getParameter("name"));
+                    ps.setString(2, request.getParameter("phone"));
+                    ps.setString(3, request.getParameter("password"));
+                    ps.setString(4, id);
+                } 
+                else if ("STUDENT".equals(role)) {
+                    ps = con.prepareStatement("UPDATE Students SET name=?, email=?, phone_num=?, password=? WHERE student_id=?");
+                    ps.setString(1, request.getParameter("name"));
+                    ps.setString(2, request.getParameter("email"));
+                    ps.setString(3, request.getParameter("phone"));
+                    ps.setString(4, request.getParameter("password"));
+                    ps.setString(5, id);
                 }
-
-                ps = con.prepareStatement("UPDATE Users SET username=?, role=?, full_name=?, student_id=?, email=?, phone=? WHERE id=?");
-                ps.setString(1, request.getParameter("username"));
-                ps.setString(2, role);
-                ps.setString(3, request.getParameter("fullName"));
-                ps.setString(4, studentId);
-                ps.setString(5, request.getParameter("email"));
-                ps.setString(6, request.getParameter("phone"));
-                ps.setInt(7, Integer.parseInt(request.getParameter("id")));
                 
-                ps.executeUpdate();
+                if (ps != null) {
+                    ps.executeUpdate();
+                }
                 
-            } catch (SQLException e) {
-                e.printStackTrace();
+            } catch (SQLException e) { 
+                e.printStackTrace(); 
             } finally {
                 if (ps != null) try { ps.close(); } catch (SQLException e) {}
                 if (con != null) try { con.close(); } catch (SQLException e) {}
@@ -50,21 +58,30 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    // Handles Deleting the User
+    // --- HANDLES DELETING USERS ---
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        
         if ("delete".equals(action)) {
-            Connection con = null;
-            PreparedStatement ps = null;
+            String role = request.getParameter("role");
+            String id = request.getParameter("id");
             
+            Connection con = null; PreparedStatement ps = null;
             try {
                 con = DBConnection.getConnection();
-                ps = con.prepareStatement("DELETE FROM Users WHERE id=?");
-                ps.setInt(1, Integer.parseInt(request.getParameter("id")));
-                ps.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
+                if ("STUDENT".equals(role)) {
+                    ps = con.prepareStatement("DELETE FROM Students WHERE student_id=?");
+                } else if ("DONOR".equals(role)) {
+                    ps = con.prepareStatement("DELETE FROM Donors WHERE email=?");
+                } else if ("STAFF".equals(role) || "ADMIN".equals(role)) {
+                    ps = con.prepareStatement("DELETE FROM Staff WHERE staff_id=?");
+                }
+                
+                if (ps != null) {
+                    ps.setString(1, id);
+                    ps.executeUpdate();
+                }
+            } catch (SQLException e) { 
+                e.printStackTrace(); 
             } finally {
                 if (ps != null) try { ps.close(); } catch (SQLException e) {}
                 if (con != null) try { con.close(); } catch (SQLException e) {}

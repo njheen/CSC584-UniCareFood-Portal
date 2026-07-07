@@ -19,14 +19,14 @@ public class VoucherServlet extends HttpServlet {
         try {
             con = DBConnection.getConnection();
             
+            // Inside your doPost method in VoucherServlet, change the INSERT block to this:
             if ("requestVoucher".equals(action)) {
                 User user = (User) request.getSession().getAttribute("currentUser");
-                ps = con.prepareStatement("INSERT INTO VoucherRequests (user_id, reason) VALUES (?, ?)");
-                ps.setInt(1, user.getId());
+                ps = con.prepareStatement("INSERT INTO VoucherRequests (student_id, reason) VALUES (?, ?)");
+                ps.setString(1, user.getLoginId()); // Uses the new String login ID
                 ps.setString(2, request.getParameter("reason"));
                 ps.executeUpdate();
                 response.sendRedirect("student_dashboard.jsp?msg=Voucher requested successfully.");
-                
             } else if ("updateStatus".equals(action)) {
                 ps = con.prepareStatement("UPDATE VoucherRequests SET status=? WHERE id=?");
                 ps.setString(1, request.getParameter("status"));
