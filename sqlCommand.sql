@@ -58,4 +58,4 @@ CREATE TABLE VoucherRequests (
 
 -- 3. INSERT DEFAULT ADMIN
 -- This ensures there is always one account to log in with
-INSERT INTO Staff (staff_id, role, password) VALUES ('admin01', 'ADMIN', 'admin123');
+INSERT INTO Staff (staff_id, role, password) VALUES ('admin', 'ADMIN', 'Password');
