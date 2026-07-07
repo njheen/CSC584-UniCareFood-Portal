@@ -13,6 +13,8 @@
 <head><title>Student Dashboard</title></head>
 <body>
     <h2>Welcome, <%= user.getName() %> (Student)</h2>
+    
+    <a href="profile.jsp">My Profile</a> | 
     <a href="AuthServlet?action=logout">Logout</a>
     <hr>
     
@@ -27,6 +29,7 @@
     </form>
 
     <hr>
+    
     <h3>My Voucher Requests</h3>
     <table border="1" cellpadding="5">
         <tr style="background-color: #fcf8e3;">
@@ -35,19 +38,17 @@
             <th>Status</th>
         </tr>
         <%
+            // 1. Declare the database variables here
             Connection con = null; 
             PreparedStatement ps = null; 
             ResultSet rs = null;
+            
             try {
                 con = DBConnection.getConnection();
-                
-                // FIXED: Changed user_id to student_id to match the new database schema
                 ps = con.prepareStatement("SELECT * FROM VoucherRequests WHERE student_id = ?");
-                
-                // FIXED: Changed getId() to getLoginId()
                 ps.setString(1, user.getLoginId());
-                
                 rs = ps.executeQuery();
+                
                 while(rs.next()) {
         %>
             <tr>
@@ -55,10 +56,46 @@
                 <td><%= rs.getString("reason") %></td>
                 <td><strong><%= rs.getString("status") %></strong></td>
             </tr>
-        <%      }
+        <%      
+                }
             } catch(Exception e) { 
                 e.printStackTrace(); 
             } finally {
+                // Close only the result set and statement so we can reuse the connection for the next table
+                if(rs != null) try { rs.close(); } catch(Exception e){}
+                if(ps != null) try { ps.close(); } catch(Exception e){}
+            }
+        %>
+    </table>
+
+    <hr>
+    
+    <h3>Available Food Stock</h3>
+    <table border="1" cellpadding="5" width="50%">
+        <tr style="background-color: #dff0d8;">
+            <th>Item</th>
+            <th>Category</th>
+            <th>Quantity Available</th>
+        </tr>
+        <%
+            try {
+                // Reusing the 'con' connection from above
+                ps = con.prepareStatement("SELECT item_name, category, SUM(quantity) as total_qty FROM Inventory GROUP BY item_name, category");
+                rs = ps.executeQuery();
+                
+                while(rs.next()) {
+        %>
+            <tr>
+                <td><%= rs.getString("item_name") %></td>
+                <td><%= rs.getString("category") %></td>
+                <td><%= rs.getInt("total_qty") %></td>
+            </tr>
+        <%      
+                }
+            } catch(Exception e) { 
+                e.printStackTrace(); 
+            } finally { 
+                // 3. Now we close ALL connections at the very end
                 if(rs != null) try { rs.close(); } catch(Exception e){}
                 if(ps != null) try { ps.close(); } catch(Exception e){}
                 if(con != null) try { con.close(); } catch(Exception e){}

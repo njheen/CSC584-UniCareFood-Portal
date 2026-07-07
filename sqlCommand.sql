@@ -38,5 +38,9 @@ CREATE TABLE VoucherRequests (
     status VARCHAR(20) DEFAULT 'PENDING'
 );
 
+
+ALTER TABLE Inventory ADD COLUMN donor_email VARCHAR(100);
+
+
 -- Insert a default Admin so you don't get locked out!
 INSERT INTO Staff (staff_id, role, password) VALUES ('admin01', 'ADMIN', 'admin123');

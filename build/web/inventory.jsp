@@ -23,36 +23,43 @@
     
     <h3>Current Inventory (Read, Update, Delete)</h3>
     <table border="1" cellpadding="5">
-        <tr><th>ID</th><th>Item</th><th>Category</th><th>Quantity</th><th>Actions</th></tr>
+        <tr style="background-color: #d9edf7;">
+            <th>Item</th><th>Category</th><th>Qty</th><th>Donor Name</th><th>Donor Email</th><th>Donor Phone</th><th>Actions</th>
+        </tr>
         <%
+            // 1. Declare the variables with their types here
             Connection con = null;
             Statement stmt = null;
             ResultSet rs = null;
+            
             try {
                 con = DBConnection.getConnection();
                 stmt = con.createStatement();
-                rs = stmt.executeQuery("SELECT * FROM Inventory");
+                // LEFT JOIN ensures items still show even if the donor was deleted (Anonymized)
+                rs = stmt.executeQuery("SELECT i.*, d.name, d.phone_num FROM Inventory i LEFT JOIN Donors d ON i.donor_email = d.email");
+                
                 while (rs.next()) {
+                    String donorName = rs.getString("name") != null ? rs.getString("name") : "Anonymous";
+                    String donorEmail = rs.getString("donor_email") != null ? rs.getString("donor_email") : "-";
+                    String donorPhone = rs.getString("phone_num") != null ? rs.getString("phone_num") : "-";
         %>
             <tr>
-                <form action="InventoryServlet" method="post">
-                    <input type="hidden" name="action" value="update">
-                    <input type="hidden" name="id" value="<%= rs.getInt("id") %>">
-                    <td><%= rs.getInt("id") %></td>
-                    <td><input type="text" name="itemName" value="<%= rs.getString("item_name") %>"></td>
-                    <td><input type="text" name="category" value="<%= rs.getString("category") %>"></td>
-                    <td><input type="number" name="quantity" value="<%= rs.getInt("quantity") %>"></td>
-                    <td>
-                        <button type="submit">Update</button>
-                        <a href="InventoryServlet?action=delete&id=<%= rs.getInt("id") %>" onclick="return confirm('Delete this item?');">Delete</a>
-                    </td>
-                </form>
+                <td><%= rs.getString("item_name") %></td>
+                <td><%= rs.getString("category") %></td>
+                <td><%= rs.getInt("quantity") %></td>
+                <td><%= donorName %></td>
+                <td><%= donorEmail %></td>
+                <td><%= donorPhone %></td>
+                <td>
+                    <a href="InventoryServlet?action=delete&id=<%= rs.getInt("id") %>" onclick="return confirm('Delete?');">Delete</a>
+                </td>
             </tr>
         <%      
                 }
             } catch (Exception e) { 
                 e.printStackTrace(); 
             } finally {
+                // 2. Always close resources to prevent database leaks
                 if (rs != null) try { rs.close(); } catch(SQLException e) {}
                 if (stmt != null) try { stmt.close(); } catch(SQLException e) {}
                 if (con != null) try { con.close(); } catch(SQLException e) {}

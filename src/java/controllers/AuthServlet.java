@@ -48,18 +48,27 @@ public class AuthServlet extends HttpServlet {
                     }
                 }
                 
-                // 3. Check Staff Table if not found
-                if (loggedInUser == null) {
-                    ps = con.prepareStatement("SELECT * FROM Staff WHERE staff_id=? AND password=?");
-                    ps.setString(1, loginId); ps.setString(2, pass);
-                    rs = ps.executeQuery();
-                    if (rs.next()) {
-                        loggedInUser = new User();
-                        loggedInUser.setLoginId(rs.getString("staff_id"));
-                        loggedInUser.setName("Staff Member"); 
-                        loggedInUser.setRole(rs.getString("role")); // STAFF or ADMIN
+                        // 3. Check Staff Table
+                    if (loggedInUser == null) {
+                        ps = con.prepareStatement("SELECT * FROM Staff WHERE staff_id=? AND password=?");
+                        ps.setString(1, loginId); 
+                        ps.setString(2, pass);
+                        rs = ps.executeQuery();
+                        if (rs.next()) {
+                            loggedInUser = new User();
+                            loggedInUser.setLoginId(rs.getString("staff_id"));
+                            loggedInUser.setName("Staff Member");
+
+                            // --- ADD THESE TWO IMPROVEMENTS ---
+                            String dbRole = rs.getString("role");
+                            if (dbRole != null) {
+                                loggedInUser.setRole(dbRole.trim().toUpperCase()); // Removes spaces & makes it UPPERCASE
+                            }
+
+                            // --- ADD THIS DEBUG LINE TO YOUR CONSOLE ---
+                            System.out.println("DEBUG: User Logged In: " + loggedInUser.getLoginId() + " with Role: " + loggedInUser.getRole());
+                        }
                     }
-                }
 
                 // Route the user
                 if (loggedInUser != null) {
