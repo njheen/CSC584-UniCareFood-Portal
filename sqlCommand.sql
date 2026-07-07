@@ -1,19 +1,26 @@
--- Create the new Voucher Requests table
-CREATE TABLE VoucherRequests (
-    id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    user_id INT,
-    reason VARCHAR(500) NOT NULL,
-    status VARCHAR(20) DEFAULT 'PENDING'
-);
 
--- 1. Create Staff Table
+-- db name: FoodbankDB
+--usename: app
+--password: app
+
+-- 1. DROP TABLES (In reverse order to avoid dependency errors)
+-- This clears everything so they can start fresh without errors
+DROP TABLE VoucherRequests;
+DROP TABLE Inventory;
+DROP TABLE Students;
+DROP TABLE Donors;
+DROP TABLE Staff;
+
+-- 2. CREATE TABLES
+
+-- Staff Table
 CREATE TABLE Staff (
     staff_id VARCHAR(50) PRIMARY KEY,
-    role VARCHAR(20) NOT NULL, -- 'STAFF' or 'ADMIN'
+    role VARCHAR(20) NOT NULL, -- STAFF or ADMIN
     password VARCHAR(50) NOT NULL
 );
 
--- 2. Create Donors Table
+-- Donors Table
 CREATE TABLE Donors (
     email VARCHAR(100) PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -21,7 +28,7 @@ CREATE TABLE Donors (
     password VARCHAR(50) NOT NULL
 );
 
--- 3. Create Students Table
+-- Students Table
 CREATE TABLE Students (
     student_id VARCHAR(50) PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -30,17 +37,25 @@ CREATE TABLE Students (
     password VARCHAR(50) NOT NULL
 );
 
--- 4. Recreate Voucher Requests linking to Student ID
+-- Inventory Table (Linked to Donors)
+CREATE TABLE Inventory (
+    id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    item_name VARCHAR(100) NOT NULL,
+    category VARCHAR(50) NOT NULL,
+    quantity INT NOT NULL,
+    donor_email VARCHAR(100),
+    CONSTRAINT fk_donor FOREIGN KEY (donor_email) REFERENCES Donors(email) ON DELETE SET NULL
+);
+
+-- VoucherRequests Table (Linked to Students)
 CREATE TABLE VoucherRequests (
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     student_id VARCHAR(50),
     reason VARCHAR(500) NOT NULL,
-    status VARCHAR(20) DEFAULT 'PENDING'
+    status VARCHAR(20) DEFAULT 'PENDING',
+    CONSTRAINT fk_student FOREIGN KEY (student_id) REFERENCES Students(student_id) ON DELETE CASCADE
 );
 
-
-ALTER TABLE Inventory ADD COLUMN donor_email VARCHAR(100);
-
-
--- Insert a default Admin so you don't get locked out!
+-- 3. INSERT DEFAULT ADMIN
+-- This ensures there is always one account to log in with
 INSERT INTO Staff (staff_id, role, password) VALUES ('admin01', 'ADMIN', 'admin123');
