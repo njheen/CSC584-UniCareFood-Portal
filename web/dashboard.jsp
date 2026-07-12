@@ -9,6 +9,8 @@
 <head>
     <title>Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .stats-grid {
             display: grid;
@@ -71,6 +73,8 @@
     </style>
 </head>
 <body>
+    
+    
     <h2>Welcome, <%= user.getName() %> (<%= user.getRole() %>)</h2>
     
     <hr>
