@@ -226,7 +226,7 @@
             ];
 
             // Palette anchored to the site's green theme, with rotating accents
-            var themeColors = ['#1E5E2F', '#2e7d32', '#4CAF50', '#81C784', '#A5D6A7', '#F1C40F', '#3498DB', '#9B59B6'];
+            var themeColors = ['#1E5E2F', '#E67E22', '#3498DB', '#F1C40F', '#9B59B6', '#E74C3C', '#16A085', '#7F8C8D'];
             function getColors(count) {
                 var colors = [];
                 for (var i = 0; i < count; i++) {
