@@ -34,11 +34,11 @@
         <% } %>
 
         <!-- Actions Bar -->
-        <div style="margin-bottom: 20px;">
+       <!-- <div style="margin-bottom: 20px;">
             <a href="student_register.jsp" class="btn btn-primary">
                 <i class="fa fa-user-plus"></i> Register New Student
             </a>
-        </div>
+        </div>-->
 
         <!-- Stylized Data Grid Container -->
         <div class="table-container">
