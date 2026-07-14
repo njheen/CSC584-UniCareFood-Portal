@@ -59,7 +59,7 @@ To keep the application working smoothly, make sure your backend classes match t
 
 ##  How to Setup the Database
 
-The application comes pre-packaged with **Apache Derby** (`derby.jar` under `/WEB-INF/lib/`)[cite: 1] but can easily be configured for MySQL or PostgreSQL. 
+The application comes pre-packaged with **Apache Derby** (`derby.jar` under `/WEB-INF/lib/`) but can easily be configured for MySQL or PostgreSQL. 
 
 Follow these steps to set up the database using Derby (or your preferred SQL engine):
 
