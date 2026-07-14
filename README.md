@@ -7,7 +7,7 @@ The **UniCareFood Portal** is a web-based platform designed to bridge the gap be
 ##  MVC Architecture Design
 
 This project is built using the standard **Model-View-Controller (MVC)** architectural pattern to keep the codebase modular, maintainable, and highly organized:
-*   **Model (Data Layer):** Represents the core application data and database connectivity rules. These are plain Java classes (POJOs) representing database tables and operations.
+*   **Model (Data Layer):** Represents the core application data and database connectivity rules. 
 *   **View (Presentation Layer):** The user interface (UI) templates. These dynamic JSP files display formatted data to users and send raw input data back to the controllers.
 *   **Controller (Business Logic Layer):** Web Servlets that capture user actions from the Views, communicate with the Models to fetch or update database entries, and route users to the appropriate View.
 
