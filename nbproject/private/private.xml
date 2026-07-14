@@ -3,21 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Najihen/OneDrive/Documents/NetBeansProjects/UniCareFood-Portal/web/index.jsp</file>
-            <file>file:/C:/Users/Najihen/OneDrive/Documents/NetBeansProjects/UniCareFood-Portal/src/java/controllers/UserServlet.java</file>
-            <file>file:/C:/Users/Najihen/OneDrive/Documents/NetBeansProjects/UniCareFood-Portal/web/edit_user.jsp</file>
-            <file>file:/C:/Users/Najihen/OneDrive/Documents/NetBeansProjects/UniCareFood-Portal/web/staff_register.jsp</file>
-            <file>file:/C:/Users/Najihen/OneDrive/Documents/NetBeansProjects/UniCareFood-Portal/web/public_register.jsp</file>
-            <file>file:/C:/Users/Najihen/OneDrive/Documents/NetBeansProjects/UniCareFood-Portal/web/inventory.jsp</file>
-            <file>file:/C:/Users/Najihen/OneDrive/Documents/NetBeansProjects/UniCareFood-Portal/web/staff_requests.jsp</file>
-            <file>file:/C:/Users/Najihen/OneDrive/Documents/NetBeansProjects/UniCareFood-Portal/web/manage_users.jsp</file>
             <file>file:/C:/Users/Najihen/OneDrive/Documents/NetBeansProjects/UniCareFood-Portal/src/java/models/User.java</file>
-            <file>file:/C:/Users/Najihen/OneDrive/Documents/NetBeansProjects/UniCareFood-Portal/web/profile.jsp</file>
-            <file>file:/C:/Users/Najihen/OneDrive/Documents/NetBeansProjects/UniCareFood-Portal/web/dashboard.jsp</file>
-            <file>file:/C:/Users/Najihen/OneDrive/Documents/NetBeansProjects/UniCareFood-Portal/sqlCommand.sql</file>
-            <file>file:/C:/Users/Najihen/OneDrive/Documents/NetBeansProjects/UniCareFood-Portal/web/register.jsp</file>
-            <file>file:/C:/Users/Najihen/OneDrive/Documents/NetBeansProjects/UniCareFood-Portal/src/java/controllers/VoucherServlet.java</file>
-            <file>file:/C:/Users/Najihen/OneDrive/Documents/NetBeansProjects/UniCareFood-Portal/web/student_dashboard.jsp</file>
+            <file>file:/C:/Users/Najihen/OneDrive/Documents/NetBeansProjects/UniCareFood-Portal/src/java/controllers/UserServlet.java</file>
+            <file>file:/C:/Users/Najihen/OneDrive/Documents/NetBeansProjects/UniCareFood-Portal/web/index.jsp</file>
+            <file>file:/C:/Users/Najihen/OneDrive/Documents/NetBeansProjects/UniCareFood-Portal/web/edit_user.jsp</file>
+            <file>file:/C:/Users/Najihen/OneDrive/Documents/NetBeansProjects/UniCareFood-Portal/src/java/models/InventoryItem.java</file>
+            <file>file:/C:/Users/Najihen/OneDrive/Documents/NetBeansProjects/UniCareFood-Portal/web/edit_inventory.jsp</file>
+            <file>file:/C:/Users/Najihen/OneDrive/Documents/NetBeansProjects/UniCareFood-Portal/src/java/models/DBConnection.java</file>
             <file>file:/C:/Users/Najihen/OneDrive/Documents/NetBeansProjects/UniCareFood-Portal/src/java/controllers/AuthServlet.java</file>
             <file>file:/C:/Users/Najihen/OneDrive/Documents/NetBeansProjects/UniCareFood-Portal/web/donor_inventory.jsp</file>
             <file>file:/C:/Users/Najihen/OneDrive/Documents/NetBeansProjects/UniCareFood-Portal/src/java/controllers/InventoryServlet.java</file>

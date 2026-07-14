@@ -11,8 +11,8 @@ DROP TABLE Students;
 DROP TABLE Donors;
 DROP TABLE Staff;
 
+--copy these Sql command into the sql worksheet
 -- 2. CREATE TABLES
-
 -- Staff Table
 CREATE TABLE Staff (
     staff_id VARCHAR(50) PRIMARY KEY,
