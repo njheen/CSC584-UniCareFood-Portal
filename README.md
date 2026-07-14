@@ -4,6 +4,41 @@ The **UniCareFood Portal** is a web-based platform designed to bridge the gap be
 
 ---
 
+##  MVC Architecture Design
+
+This project is built using the standard **Model-View-Controller (MVC)** architectural pattern to keep the codebase modular, maintainable, and highly organized:
+*   **Model (Data Layer):** Represents the core application data and database connectivity rules. These are plain Java classes (POJOs) representing database tables and operations.
+*   **View (Presentation Layer):** The user interface (UI) templates. These dynamic JSP files display formatted data to users and send raw input data back to the controllers.
+*   **Controller (Business Logic Layer):** Web Servlets that capture user actions from the Views, communicate with the Models to fetch or update database entries, and route users to the appropriate View.
+
+---
+
+## Project Structure & Component Mapping
+
+Here is how the files in this repository map directly to the **MVC** design pattern:
+
+### 1. View (Presentation)
+These files manage the user interface, routing inputs via HTML forms to their corresponding controller Servlets.
+*   **Landing & Auth UI:** `index.jsp`, `register.jsp`, `public_register.jsp`, `student_register.jsp`, `staff_register.jsp`.
+*   **Dashboards:** `dashboard.jsp`, `student_dashboard.jsp`, `profile.jsp`, `staff_profile.jsp`.
+*   **Features:** `inventory.jsp`, `donor_inventory.jsp`, `edit_inventory.jsp`, `manage_users.jsp`, `manage_students.jsp`, `edit_user.jsp`.
+*   **Assets & Partials:** `navbar.jsp`, `sidebar.jsp`, `style.css`.
+
+### 2. Controller (Routing & Logic)
+Located in `/WEB-INF/classes/controllers/`[cite: 1], these Servlets process incoming HTTP GET/POST requests.
+*   **`AuthServlet.class`**: Coordinates login validations, registers active sessions, and handles logouts.
+*   **`UserServlet.class`**: Routes user management actions (e.g., editing profile info, adding/deleting users).
+*   **`InventoryServlet.class`**: Validates, stores, and updates physical food stock listings.
+*   **`VoucherServlet.class`**: Manages the approval and redemption requests for food vouchers.
+
+### 3. Model (Entities & Database Connection)
+Located in `/WEB-INF/classes/models/`[cite: 1], these classes structure database entities and coordinate queries.
+*   **`DBConnection.class`**: Manages database connection pools and configurations.
+*   **`User.class`**: Encapsulates login credentials, roles (Admin, Staff, Student, Donor), and contact details.
+*   **`InventoryItem.class`**: Holds attributes for food items like Name, Expiry Date, Quantity, and associated Donor details.
+
+---
+
 ##  Project Structure & What's in This Repository
 
 This project is a classic Java EE (Enterprise Edition) application structured to run on a web server like GlassFish or Apache Tomcat. Here is a breakdown of the key files and directories:
@@ -28,38 +63,10 @@ This project is a classic Java EE (Enterprise Edition) application structured to
 *   **`User.class`**: Represents system entity data (ID, name, email, role: Admin, Staff, Student, or Donor).
 *   **`InventoryItem.class`**: Represents individual food inventory listings (Item Name, Expiry Date, Quantity, and Donor details).
 
----
-
-## 🛠️ Required Models (Entities)
-
-To keep the application working smoothly, make sure your backend classes match the logic expected by your controller Servlets. The primary data models are:
-
-1.  **User Model**
-    *   `userId` (Primary Key)
-    *   `username` / `email`
-    *   `password` (Hashed)
-    *   `role` (e.g., `Admin`, `Staff`, `Student`, `Donor`)
-    *   `profileDetails` (Phone, Department, Matric Number)
-
-2.  **InventoryItem Model**
-    *   `itemId` (Primary Key)
-    *   `itemName`
-    *   `category` (Perishable, Non-perishable, Packaged)
-    *   `quantity`
-    *   `expiryDate`
-    *   `donorId` (Foreign Key referencing User)
-
-3.  **Voucher / Request Model** (implied by `VoucherServlet`)
-    *   `voucherId` (Primary key)
-    *   `studentId` (Foreign Key referencing User)
-    *   `itemId` / `bundleId` (Foreign Key referencing Inventory)
-    *   `status` (Pending, Approved, Redeemed, Cancelled)
-
----
 
 ##  How to Setup the Database
 
-The application comes pre-packaged with **Apache Derby** (`derby.jar` under `/WEB-INF/lib/`) but can easily be configured for MySQL or PostgreSQL. 
+The application comes pre-packaged with **Apache Derby** (`derby.jar` under `/WEB-INF/lib/`)[cite: 1] but can easily be configured for MySQL or PostgreSQL. 
 
 Follow these steps to set up the database using Derby (or your preferred SQL engine):
 
